@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "wonk": {
-      "command": "wonk",
+      "command": "/usr/local/bin/wonk",
       "args": ["mcp", "serve"]
     }
   }
