@@ -1,0 +1,5 @@
+{
+  "name": "wonk",
+  "description": "Structure-aware code search — ranked, deduplicated results optimized for LLM agents",
+  "version": "0.1.0"
+}

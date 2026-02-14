@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'command -v wonk >/dev/null 2>&1 && wonk update -q 2>/dev/null || true'"
+          }
+        ]
+      }
+    ]
+  }
+}
