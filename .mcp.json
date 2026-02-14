@@ -1,0 +1,6 @@
+{
+  "wonk": {
+    "command": "wonk",
+    "args": ["mcp", "serve"]
+  }
+}
