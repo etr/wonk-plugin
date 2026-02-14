@@ -29,8 +29,17 @@ methods.
 
 ## Install the plugin
 
+Via the [Groundwork Marketplace](https://github.com/etr/groundwork-marketplace):
+
 ```sh
-claude plugin add etr/wonk-plugin
+claude plugin marketplace add https://github.com/etr/groundwork-marketplace
+claude plugin add wonk
+```
+
+Or directly:
+
+```sh
+claude plugin add https://github.com/etr/wonk-plugin
 ```
 
 ## Supported languages
