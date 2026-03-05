@@ -32,9 +32,11 @@ features), and configuring wonk options.
    - Question: "Wonk **<current>** is installed. Version **<latest>** is
      available. Would you like to update?"
    - Options: "Yes, update to <latest>" / "No, keep current version"
-5. If the user chooses to update, run the install script:
-   ```
-   curl -fsSL https://raw.githubusercontent.com/etr/wonk/main/install.sh | sh
+5. If the user chooses to update, detect the current install directory and
+   pass it to the install script so wonk updates in-place:
+   ```sh
+   WONK_DIR=$(dirname "$(command -v wonk)")
+   curl -fsSL https://raw.githubusercontent.com/etr/wonk/main/install.sh | sh -s -- --install-dir "$WONK_DIR"
    ```
    Then verify with `wonk --version` and report the new version.
 
@@ -45,11 +47,11 @@ features), and configuring wonk options.
    - Options: "/usr/local/bin (default)" / "~/.local/bin" / "Custom location"
 2. Run the install script with the chosen location:
    ```sh
-   # Default:
+   # Default (/usr/local/bin):
    curl -fsSL https://raw.githubusercontent.com/etr/wonk/main/install.sh | sh
 
-   # Custom:
-   WONK_INSTALL=<path> curl -fsSL https://raw.githubusercontent.com/etr/wonk/main/install.sh | sh
+   # Custom path:
+   curl -fsSL https://raw.githubusercontent.com/etr/wonk/main/install.sh | sh -s -- --install-dir <path>
    ```
 3. Verify with `wonk --version`. If the command is not found, check whether
    the install directory is on the user's PATH and advise them to add it.
