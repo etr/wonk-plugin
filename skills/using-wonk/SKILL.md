@@ -3,13 +3,18 @@ name: using-wonk
 description: >
   This skill should be used when the agent needs to search code, find where a
   symbol is defined, trace references or call sites, explore import
-  dependencies, or list project structure — tasks like "find the definition
-  of X", "who calls this function", "what does this file import", or "search
-  the codebase for pattern". Wonk provides MCP tools (wonk_search, wonk_sym,
-  wonk_ref, wonk_sig, wonk_ls, wonk_deps, wonk_rdeps) that return ranked,
+  dependencies, list project structure, trace call graphs, analyze blast radius,
+  detect changes, or explore execution flows — tasks like "find the definition
+  of X", "who calls this function", "what does this file import", "search
+  the codebase for pattern", "what's the blast radius of changing X", or
+  "show me the execution flow". Wonk provides 23 MCP tools (wonk_search,
+  wonk_sym, wonk_ref, wonk_sig, wonk_show, wonk_ls, wonk_deps, wonk_rdeps,
+  wonk_callers, wonk_callees, wonk_callpath, wonk_summary, wonk_flows,
+  wonk_blast, wonk_changes, wonk_context, wonk_ask, wonk_cluster, wonk_impact,
+  wonk_init, wonk_update, wonk_status, wonk_repos) that return ranked,
   deduplicated results optimized for LLM agents. Prefer wonk tools over Grep
   and Glob for code exploration in supported languages (TypeScript, JavaScript,
-  Python, Rust, Go, Java, C, C++, Ruby, PHP).
+  Python, Rust, Go, Java, C, C++, Ruby, PHP, C#).
 ---
 
 # Wonk — Structure-Aware Code Search
@@ -39,4 +44,4 @@ other matches, comments, and tests.
 
 TypeScript (.ts), TSX (.tsx), JavaScript (.js, .jsx), Python (.py),
 Rust (.rs), Go (.go), Java (.java), C (.c, .h), C++ (.cpp, .cc, .hpp),
-Ruby (.rb), PHP (.php).
+Ruby (.rb), PHP (.php), C# (.cs).
