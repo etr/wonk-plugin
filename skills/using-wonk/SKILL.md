@@ -31,11 +31,55 @@ other matches, comments, and tests.
 - Searching non-code files (configs, docs, data files, logs)
 - Wonk tools are not available in the current session
 
+## Tool Selection Guide
+
+Pick the right tool for the task:
+
+| Task | Best Tool | NOT this |
+|------|-----------|----------|
+| "Find where X is defined" | `wonk_sym` | ~~wonk_search~~ |
+| "Show me the source of X" | `wonk_show` (batch: `name="X,Y,Z"`) | ~~multiple wonk_show calls~~ |
+| "Who calls X?" | `wonk_callers` (or `wonk_context` for everything) | ~~wonk_show → read body → manual trace~~ |
+| "How does X reach Y?" | `wonk_callpath(from="X", to="Y")` | ~~chained wonk_show calls~~ |
+| "How does this flow work?" | `wonk_flows(entry="main")` | ~~wonk_show → wonk_show → wonk_show~~ |
+| "Everything about X" | `wonk_context` (ONE call: def + callers + callees + imports) | ~~wonk_sym + wonk_callers + wonk_callees + wonk_ref~~ |
+| "Search for pattern" | `wonk_search` | Only use Grep for non-code files |
+| "Check function signature" | `wonk_sig` (fastest, no bodies) | ~~wonk_show~~ |
+
+## Efficient Patterns
+
+**DO:** Use 2-3 targeted wonk calls and stop.
+- `wonk_sym` → `wonk_show` → done
+- `wonk_context` → done (replaces 4+ separate calls)
+- `wonk_callpath(from, to)` → done (replaces 6+ show calls)
+- `wonk_show(name="main,parse,validate")` → done (batch lookup)
+
+**DON'T:** Chain 5+ wonk_show calls to manually trace a call path.
+Each successive call adds all previous results to context → quadratic token growth.
+
+## Handling Empty Results
+
+When a tool returns 0 results, it includes diagnostic hints:
+- Similar symbol name suggestions
+- Advice to remove file/kind filters for broader results
+- Suggestion to try wonk_search for text-based matching
+
+Follow the hints rather than retrying with slightly different parameters.
+
+## Handling Truncation
+
+When results are truncated, the response includes a `hint` field:
+- For wonk_show: `"use Read(file, line, 80) for full file content"`
+- For other tools: `"Increase budget to see more results."`
+
+Use the suggested Read call for full context instead of calling wonk_show again
+with a larger budget.
+
 ## Error Handling
 
 - **Wonk tools unavailable:** Fall back to Grep/Glob. Do not attempt installation.
 - **Unsupported language:** Fall back to Grep/Glob (see Supported Languages below).
-- **No results:** Try broader patterns or case-insensitive search. If still
+- **No results:** Follow the diagnostic hints in the response. If still
   empty, fall back to Grep.
 - **Index stale:** The session hook runs `wonk update` automatically at start.
   If files changed mid-session, use the `wonk_init` tool to refresh the index.
