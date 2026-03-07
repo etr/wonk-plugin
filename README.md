@@ -8,8 +8,8 @@ code search that cuts LLM token burn.
 This plugin connects wonk to Claude Code so the agent can search your codebase
 using ranked, deduplicated results instead of raw grep output. It provides:
 
-- **MCP server** — registers `wonk mcp serve` so all 23 wonk tools
-  (`wonk_search`, `wonk_sym`, `wonk_ref`, `wonk_sig`, `wonk_show`, `wonk_ls`,
+- **MCP server** — registers `wonk mcp serve` so all 22 wonk tools
+  (`wonk_search`, `wonk_sym`, `wonk_ref`, `wonk_sig`, `wonk_show`,
   `wonk_deps`, `wonk_rdeps`, `wonk_callers`, `wonk_callees`, `wonk_callpath`,
   `wonk_summary`, `wonk_flows`, `wonk_blast`, `wonk_changes`, `wonk_context`,
   `wonk_ask`, `wonk_cluster`, `wonk_impact`, `wonk_init`, `wonk_update`,

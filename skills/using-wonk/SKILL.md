@@ -7,8 +7,8 @@ description: >
   detect changes, or explore execution flows — tasks like "find the definition
   of X", "who calls this function", "what does this file import", "search
   the codebase for pattern", "what's the blast radius of changing X", or
-  "show me the execution flow". Wonk provides 23 MCP tools (wonk_search,
-  wonk_sym, wonk_ref, wonk_sig, wonk_show, wonk_ls, wonk_deps, wonk_rdeps,
+  "show me the execution flow". Wonk provides 22 MCP tools (wonk_search,
+  wonk_sym, wonk_ref, wonk_sig, wonk_show, wonk_deps, wonk_rdeps,
   wonk_callers, wonk_callees, wonk_callpath, wonk_summary, wonk_flows,
   wonk_blast, wonk_changes, wonk_context, wonk_ask, wonk_cluster, wonk_impact,
   wonk_init, wonk_update, wonk_status, wonk_repos) that return ranked,
@@ -44,6 +44,7 @@ Pick the right tool for the task:
 | "How does this flow work?" | `wonk_flows(entry="main")` | ~~wonk_show → wonk_show → wonk_show~~ |
 | "Everything about X" | `wonk_context` (ONE call: def + callers + callees + imports) | ~~wonk_sym + wonk_callers + wonk_callees + wonk_ref~~ |
 | "Summarize module architecture" | `wonk_summary(path, detail=rich, depth=1)` — returns symbols + import edges | ~~Glob + multiple Read calls~~ |
+| "List symbols in a file" | `wonk_summary(path, detail=rich)` or `wonk_summary(path, detail=rich, tree=true)` for hierarchy | ~~Grep for definitions~~ |
 | "Search for pattern" | `wonk_search` | Only use Grep for non-code files |
 | "Check function signature" | `wonk_sig` (fastest, no bodies) | ~~wonk_show~~ |
 
