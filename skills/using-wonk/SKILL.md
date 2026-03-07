@@ -43,8 +43,8 @@ Pick the right tool for the task:
 | "How does X reach Y?" | `wonk_callpath(from="X", to="Y")` | ~~chained wonk_show calls~~ |
 | "How does this flow work?" | `wonk_flows(entry="main")` | ~~wonk_show → wonk_show → wonk_show~~ |
 | "Everything about X" | `wonk_context` (ONE call: def + callers + callees + imports) | ~~wonk_sym + wonk_callers + wonk_callees + wonk_ref~~ |
-| "Summarize module architecture" | `wonk_summary(path, detail=rich, depth=1)` — returns symbols + import edges | ~~Glob + multiple Read calls~~ |
-| "List symbols in a file" | `wonk_summary(path, detail=rich)` or `wonk_summary(path, detail=rich, tree=true)` for hierarchy | ~~Grep for definitions~~ |
+| "Summarize module architecture" | `wonk_summary(path, depth=1)` — returns top-level symbols with doc comments + import edges | ~~Glob + multiple Read calls~~ |
+| "List symbols in a file" | `wonk_summary(path)` — compact outline with doc comments | ~~Grep for definitions~~ |
 | "Search for pattern" | `wonk_search` | Only use Grep for non-code files |
 | "Check function signature" | `wonk_sig` (fastest, no bodies) | ~~wonk_show~~ |
 
@@ -55,7 +55,7 @@ Pick the right tool for the task:
 - `wonk_context` → done (replaces 4+ separate calls)
 - `wonk_callpath(from, to)` → done (replaces 6+ show calls)
 - `wonk_show(name="main,parse,validate")` → done (batch lookup)
-- `wonk_summary(path="src/module", detail="rich", depth=1)` → done (architecture overview with symbols + imports)
+- `wonk_summary(path="src/module", depth=1)` → done (architecture overview with symbols, doc comments + imports)
 
 **DON'T:** Chain 5+ wonk_show calls to manually trace a call path.
 Each successive call adds all previous results to context → quadratic token growth.
