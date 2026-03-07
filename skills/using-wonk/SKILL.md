@@ -71,12 +71,14 @@ Follow the hints rather than retrying with slightly different parameters.
 
 ## Handling Truncation
 
-When results are truncated, the response includes a `hint` field:
-- For wonk_show: `"use Read(file, line, 80) for full file content"`
+When results are truncated, the response includes a `hint` field.
+- **wonk_show auto-shallow:** Large container types (class, struct, trait, enum,
+  interface) automatically fall back to shallow mode when their full body exceeds
+  the budget. Results include `"auto_shallow": true` so you know the body was
+  replaced with signature + child signatures.
 - For other tools: `"Increase budget to see more results."`
 
-Use the suggested Read call for full context instead of calling wonk_show again
-with a larger budget.
+If auto-shallow still doesn't fit, use `shallow:true` explicitly or increase the budget.
 
 ## Error Handling
 
