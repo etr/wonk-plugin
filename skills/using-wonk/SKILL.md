@@ -45,7 +45,9 @@ Pick the right tool for the task:
 | "Everything about X" | `wonk_context` (ONE call: def + callers + callees + imports) | ~~wonk_sym + wonk_callers + wonk_callees + wonk_ref~~ |
 | "Summarize module architecture" | `wonk_summary(path, depth=1)` — returns top-level symbols with doc comments + import edges | ~~Glob + multiple Read calls~~ |
 | "List symbols in a file" | `wonk_summary(path)` — compact outline with doc comments | ~~Grep for definitions~~ |
-| "Search for pattern" | `wonk_search` | Only use Grep for non-code files |
+| "Search for keyword/regex" | `wonk_search` (NOT natural language) | Only use Grep for non-code files |
+| "Semantic / NL search" | `wonk_ask` (requires embeddings) | ~~wonk_search with sentences~~ |
+| "List files referencing X" | `wonk_ref(name="X", output="files")` | ~~wonk_ref → extract file names~~ |
 | "Check function signature" | `wonk_sig` (fastest, no bodies) | ~~wonk_show~~ |
 
 ## Efficient Patterns
@@ -71,14 +73,14 @@ Follow the hints rather than retrying with slightly different parameters.
 
 ## Handling Truncation
 
-When results are truncated, the response includes a `hint` field.
+When results are truncated, the response includes a `hint` field with
+"Showing N of M" and `"truncated": N` metadata.
 - **wonk_show auto-shallow:** Large container types (class, struct, trait, enum,
   interface) automatically fall back to shallow mode when their full body exceeds
   the budget. Results include `"auto_shallow": true` so you know the body was
   replaced with signature + child signatures.
-- For other tools: `"Increase budget to see more results."`
-
-If auto-shallow still doesn't fit, use `shallow:true` explicitly or increase the budget.
+- **wonk_show returns complete source** — you do not need to Read the same file afterward.
+- Results are sorted by relevance; the most important matches are shown first.
 
 ## Error Handling
 
