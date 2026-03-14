@@ -10,9 +10,9 @@ description: >
 
 # Wonk Setup — Install, Update, Dependencies & Configuration
 
-Walk the user through a complete wonk setup in three steps: installing or
-updating the wonk binary, setting up optional dependencies (Ollama for semantic
-features), and configuring wonk options.
+Walk the user through a complete wonk setup: installing or updating the wonk
+binary, choosing CLI or MCP mode, setting up optional dependencies (Ollama for
+semantic features), and configuring wonk options.
 
 ## Step 1: Check, Install, or Update Wonk
 
@@ -64,9 +64,72 @@ features), and configuring wonk options.
 - **curl not found:** Suggest installing curl first, or using
   `cargo install wonk`.
 
-## Step 2: Optional Dependencies
+## Step 2: Mode Selection (CLI vs MCP)
 
 After wonk is confirmed installed, use **AskUserQuestion** to ask:
+
+- Question: "How should wonk integrate with Claude Code? **CLI mode**
+  (recommended) runs wonk commands via the Bash tool — simpler, no background
+  process. **MCP mode** starts a persistent MCP server that exposes wonk tools
+  as native tools — richer integration but requires an extra process."
+- Options: "CLI mode (recommended)" / "MCP mode"
+- Default (if the user does not answer or skips): CLI mode
+
+### Save the mode preference
+
+Create or update `.claude/wonk.local.md` in the **project root** (not the
+plugin directory):
+
+```markdown
+---
+mode: cli
+---
+```
+
+or for MCP:
+
+```markdown
+---
+mode: mcp
+---
+```
+
+Use `mkdir -p .claude` before writing if the directory does not exist.
+
+### If the user chooses MCP mode
+
+Create or update `.mcp.json` in the **project root** to register the wonk MCP
+server:
+
+```json
+{
+  "mcpServers": {
+    "wonk": {
+      "command": "wonk",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+If `.mcp.json` already exists, merge the `wonk` entry into the existing
+`mcpServers` object. Do not overwrite other servers.
+
+Tell the user: "MCP mode configured. Restart Claude Code for the MCP server to
+start. Wonk tools will be available as `wonk_search`, `wonk_sym`, etc."
+
+### If the user chooses CLI mode (or default)
+
+Tell the user: "CLI mode configured. Wonk commands will run via the Bash tool.
+No extra processes needed."
+
+If a `.mcp.json` in the project root has a `wonk` entry under `mcpServers`,
+remove it (clean up from a previous MCP setup). If removing it leaves
+`mcpServers` empty, remove the file.
+
+## Step 3: Optional Dependencies
+
+Use **AskUserQuestion** to ask:
 
 - Question: "Wonk supports semantic search (`wonk ask`), clustering
   (`wonk cluster`), and impact analysis (`wonk impact`) when Ollama is
@@ -104,7 +167,7 @@ After wonk is confirmed installed, use **AskUserQuestion** to ask:
 Tell them: "Wonk will work for structural search without Ollama. You can set
 up Ollama later by running this skill again."
 
-## Step 3: Configuration
+## Step 4: Configuration
 
 Use **AskUserQuestion** to ask:
 
@@ -135,7 +198,7 @@ Use **AskUserQuestion** to ask:
    **Output:**
    - `default_format` — `"grep"` (default), `"json"`, or `"toon"`
 
-   **LLM (only if Ollama was set up in Step 2):**
+   **LLM (only if Ollama was set up in Step 3):**
    - `model` — Ollama model for summaries (default: `llama3.2:3b`)
    - `generate_url` — Ollama endpoint (default:
      `http://localhost:11434/api/generate`; change for remote Ollama)
@@ -180,6 +243,7 @@ Tell them: "Wonk will use built-in defaults. You can add a config later at
 
 Print a summary of everything that was set up:
 - Wonk version installed (or updated from → to)
+- Integration mode: CLI or MCP
 - Ollama status and available models (or skipped)
 - Config file path and what was configured (or using defaults)
 - Suggest running `wonk init` in a repository to build the initial index

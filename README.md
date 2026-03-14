@@ -8,14 +8,12 @@ code search that cuts LLM token burn.
 This plugin connects wonk to Claude Code so the agent can search your codebase
 using ranked, deduplicated results instead of raw grep output. It provides:
 
-- **MCP server** — registers `wonk mcp serve` so all 22 wonk tools
-  (`wonk_search`, `wonk_sym`, `wonk_ref`, `wonk_sig`, `wonk_show`,
-  `wonk_deps`, `wonk_rdeps`, `wonk_callers`, `wonk_callees`, `wonk_callpath`,
-  `wonk_summary`, `wonk_flows`, `wonk_blast`, `wonk_changes`, `wonk_context`,
-  `wonk_ask`, `wonk_cluster`, `wonk_impact`, `wonk_init`, `wonk_update`,
-  `wonk_status`, `wonk_repos`) appear as native tools
+- **CLI mode (default)** — runs `wonk` commands via the Bash tool. No background
+  process needed.
+- **MCP mode (optional)** — registers `wonk mcp serve` so all 22 wonk tools
+  appear as native tools. Requires a persistent MCP server process.
 - **Skill** — teaches the agent when to prefer wonk over Grep/Glob and how to
-  handle errors and unsupported languages
+  pick the right wonk command for each task
 - **Session hook** — runs `wonk update -q` on session start to keep the index
   fresh
 
@@ -44,6 +42,19 @@ Or directly:
 ```sh
 claude plugin add https://github.com/etr/wonk-plugin
 ```
+
+## Configuration
+
+After installing, run the setup skill (`/wonk:setup-wonk`) to choose between
+CLI and MCP modes. The preference is stored in `.claude/wonk.local.md`:
+
+```yaml
+---
+mode: cli   # or "mcp"
+---
+```
+
+CLI mode is recommended and used by default when no configuration exists.
 
 ## Supported languages
 
