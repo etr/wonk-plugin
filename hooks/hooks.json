@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'command -v wonk >/dev/null 2>&1 && wonk update -q 2>/dev/null || true'"
+            "command": "bash -c 'command -v wonk >/dev/null 2>&1 && wonk update -q --skip-embed 2>/dev/null || true'"
           }
         ]
       }
